@@ -618,34 +618,28 @@ void CBreakableSurface::Die( CBaseEntity *pBreaker, const Vector &vAttackDir )
 
 	case matGlass:
 		soundname = "Glass.Break";
-		cFlag = BREAK_GLASS;
 		break;
 
 	case matWood:
 		soundname = "Wood_Box.Break";
-		cFlag = BREAK_WOOD;
 		break;
 
 	case matComputer:
 		soundname = "Breakable.Computer";
-		cFlag = BREAK_METAL;
 		break;
 
 	case matMetal:
 		soundname = "Metal_Box.Break";
-		cFlag = BREAK_METAL;
 		break;
 
 	case matFlesh:
 	case matWeb:
 		soundname = "Flesh.Break";
-		cFlag = BREAK_FLESH;
 		break;
 
 	case matRocks:
 	case matCinderBlock:
 		soundname = "Breakable.Concrete";
-		cFlag = BREAK_CONCRETE;
 		break;
 
 	case matCeilingTile:
