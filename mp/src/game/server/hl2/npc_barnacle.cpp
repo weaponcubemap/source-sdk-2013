@@ -1953,6 +1953,9 @@ void CNPC_Barnacle::LostPrey( bool bRemoveRagdoll )
 //-----------------------------------------------------------------------------
 void CNPC_Barnacle::OnTongueTipUpdated()
 {
+	if ( m_hTongueTip == NULL )
+		return;
+
 	// Update the tip's position
 	const Vector &vecNewTip = m_hTongueTip->GetAbsOrigin();
 	if ( vecNewTip != m_vecTip )
