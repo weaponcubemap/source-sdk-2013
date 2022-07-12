@@ -662,6 +662,9 @@ void CPropCrane::RecalculateCraneTip( void )
 //-----------------------------------------------------------------------------
 void CPropCrane::RunCraneMovement( float flTime )
 {
+	if (m_hCraneMagnet == NULL)
+		return;
+
 	if ( m_flExtensionRate )
 	{
 		// Extend / Retract the crane
