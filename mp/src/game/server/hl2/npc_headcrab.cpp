@@ -2032,9 +2032,13 @@ void CBaseHeadcrab::TraceAttack( const CTakeDamageInfo &info, const Vector &vecD
 			newInfo.SetDamageForce( info.GetDamageForce() * 3000.0f );
 		}
 
-		PainSound( newInfo );
-		SetGroundEntity( NULL );
-		ApplyAbsVelocityImpulse( puntDir );
+		CBaseEntity *attacker = info.GetAttacker();
+		if (attacker && attacker->GetGroundEntity() != this)
+		{
+			PainSound(newInfo);
+			SetGroundEntity(NULL);
+			ApplyAbsVelocityImpulse(puntDir);
+		}
 	}
 
 	BaseClass::TraceAttack( newInfo, vecDir, ptr, pAccumulator );
