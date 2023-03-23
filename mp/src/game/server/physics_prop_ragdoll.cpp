@@ -920,6 +920,9 @@ bool CRagdollProp::TestCollision( const Ray_t &ray, unsigned int mask, trace_t& 
 
 void CRagdollProp::Teleport( const Vector *newPosition, const QAngle *newAngles, const Vector *newVelocity )
 {
+	if (!m_ragdoll.list[0].pObject)
+		return;
+
 	// newAngles is a relative transform for the entity
 	// But a ragdoll entity has identity orientation by design
 	// so we compute a relative transform here based on the previous transform
