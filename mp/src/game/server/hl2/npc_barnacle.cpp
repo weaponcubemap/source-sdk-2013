@@ -263,11 +263,7 @@ void CNPC_Barnacle::Spawn()
 	SetSolid( SOLID_BBOX );
 	AddSolidFlags( FSOLID_NOT_STANDABLE );
 	CollisionProp()->SetSurroundingBoundsType( USE_GAME_CODE );
-#if HL2_EPISODIC // the episodic barnacle is solid, so it can be sawbladed.
 	SetMoveType( MOVETYPE_PUSH );
-#else
-	SetMoveType( MOVETYPE_NONE );
-#endif
 	SetBloodColor( BLOOD_COLOR_GREEN );
 	m_iHealth			= sk_barnacle_health.GetFloat();
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
@@ -280,13 +276,11 @@ void CNPC_Barnacle::Spawn()
 	m_takedamage		= DAMAGE_YES;
 	m_pConstraint		= NULL;
 	m_nShakeCount = 0;
-#if HL2_EPISODIC // the episodic barnacle is solid, so it can be sawbladed.
 	IPhysicsObject *pPhys = VPhysicsInitShadow( false, false );
 	if (pPhys)
 	{
 		pPhys->SetMass(500);
 	}
-#endif
 	InitBoneControllers();
 	InitTonguePosition();
 
@@ -610,7 +604,7 @@ void CNPC_Barnacle::BarnacleThink ( void )
 				// tongue is fully extended, and is touching someone.
 				CBaseCombatCharacter *pBCC = dynamic_cast<CBaseCombatCharacter *>(pTouchEnt);
 
-				if( CanPickup( pBCC ) )
+				if ( CanPickup(pBCC) && !(FClassnameIs(pTouchEnt, "prop_combine_ball")) )
 				{
 					Vector vecGrabPos = pTouchEnt->EyePosition();
 					if( !pBCC || pBCC->DispatchInteraction( g_interactionBarnacleVictimGrab, &vecGrabPos, this ) )
@@ -660,7 +654,7 @@ bool CNPC_Barnacle::CanPickup( CBaseCombatCharacter *pBCC )
 	if( !pBCC )
 		return true;
 
-	// Don't pickup turrets, rollermines, apc drivers
+	// Don't pickup turrets, apc drivers, and rollermines
 	if (FClassnameIs(pBCC, "npc_turret_floor") || FClassnameIs(pBCC, "npc_apcdriver") || FClassnameIs(pBCC, "npc_rollermine"))
 		return false;
 
@@ -2093,6 +2087,12 @@ void CNPC_Barnacle::Event_Killed( const CTakeDamageInfo &info )
 
 	SetNextThink( gpGlobals->curtime + 0.1f );
 	SetThink ( &CNPC_Barnacle::WaitTillDead );
+
+	// May it dissolve?
+	if (info.GetDamageType() & DMG_DISSOLVE)
+	{
+		GetBaseAnimating()->Dissolve(NULL, gpGlobals->curtime, false, ENTITY_DISSOLVE_NORMAL);
+	}
 
 	// we deliberately do not call BaseClass::EventKilled
 }
