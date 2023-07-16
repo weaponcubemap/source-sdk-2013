@@ -367,6 +367,7 @@ void CNPC_CScanner::Gib( void )
 			pBattery->SetAbsVelocity( GetAbsVelocity() );
 			pBattery->SetLocalAngularVelocity( GetLocalAngularVelocity() );
 			pBattery->ActivateWhenAtRest();
+			pBattery->AddSpawnFlags(SF_NORESPAWN);
 			pBattery->Spawn();
 		}
 	}
