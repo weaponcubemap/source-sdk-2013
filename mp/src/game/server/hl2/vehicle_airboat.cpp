@@ -475,8 +475,6 @@ void CPropAirboat::Activate()
 	m_nGunBarrelAttachment = LookupAttachment( "muzzle" );
 	m_nSplashAttachment = LookupAttachment( "splash_pt" );
 
-	CreateSounds();
-
 	CBaseServerVehicle *pServerVehicle = dynamic_cast<CBaseServerVehicle *>(GetServerVehicle());
 	if ( pServerVehicle )
 	{
@@ -665,6 +663,8 @@ void CPropAirboat::EnterVehicle( CBaseCombatCharacter *pPlayer )
 	// NPCs like manhacks should try to hit us
 	SetNavIgnore();
 
+	CreateSounds();
+
 	// Play the engine start sound.
 	float flDuration;
 	EmitSound( "Airboat_engine_start", 0.0, &flDuration );
@@ -754,6 +754,8 @@ void CPropAirboat::ExitVehicle( int nRole )
 	{
 		HeadlightTurnOff();
 	}
+
+	StopLoopingSounds();
 }
 
 
